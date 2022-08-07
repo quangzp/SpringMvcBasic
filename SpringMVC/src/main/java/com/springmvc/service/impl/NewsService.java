@@ -2,7 +2,6 @@ package com.springmvc.service.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,10 +18,12 @@ import com.springmvc.entity.CategoryEntity;
 import com.springmvc.entity.NewsEntity;
 import com.springmvc.mapper.INewsMapper;
 import com.springmvc.repository.ICategoryRepository;
+import com.springmvc.repository.ICommentRepository;
 import com.springmvc.repository.INewsRepository;
 import com.springmvc.service.INewsService;
 
 @Service
+@Transactional
 public class NewsService implements INewsService {
 
 	@Autowired
@@ -30,6 +31,9 @@ public class NewsService implements INewsService {
 
 	@Autowired
 	private ICategoryRepository categoryRepository;
+	
+	@Autowired
+	private ICommentRepository commentRepository;
 
 	@Autowired
 	private INewsMapper mapper;
@@ -40,15 +44,14 @@ public class NewsService implements INewsService {
 	@Override
 	public List<NewsDto> findAll(Pageable pageable) {
 		List<NewsEntity> entities = newsRepository.findAll(pageable).getContent();
-		List<NewsDto> result = new ArrayList<>();
+		List<NewsDto> dtos = new ArrayList<>();
 		for (NewsEntity entity : entities) {
 			NewsDto dto = mapper.toDto(entity);
 			dto.setCategoryCode(dto.getCategory().getCode());
-			dto.setThumbnail(entity.getThumbnail());
-			result.add(dto);
+			dtos.add(dto);
 		}
 
-		return result;
+		return dtos;
 	}
 
 	@Override
@@ -65,13 +68,12 @@ public class NewsService implements INewsService {
 	}
 
 	@Override
-	@Transactional
 	public NewsDto save(NewsDto dto, MultipartFile file) {
+		NewsEntity newsEntity = new NewsEntity();
 
 		if (file != null) {
-			dto.setPhotoFile(file);
 			try {
-				Map resp = cloudinary.uploader().upload(dto.getPhotoFile().getBytes(),
+				Map resp = cloudinary.uploader().upload(file.getBytes(),
 						ObjectUtils.asMap("public_id", dto.getSlug(), "resource_type", "auto"));
 				dto.setThumbnail((String) resp.get("secure_url"));
 
@@ -80,7 +82,7 @@ public class NewsService implements INewsService {
 
 			}
 		}
-		NewsEntity newsEntity = new NewsEntity();
+
 		Long id = dto.getId();
 
 		if (id != null) { // update
@@ -98,7 +100,6 @@ public class NewsService implements INewsService {
 	}
 
 	@Override
-	@Transactional
 	public void delete(long[] ids) {
 		List<String> publicIds = new ArrayList<>();
 		for (long id : ids) {
@@ -111,4 +112,41 @@ public class NewsService implements INewsService {
 			System.out.println(e.getMessage());
 		}
 	}
+
+	@Override
+	public List<NewsDto> findAllByCategoryCode(String code, Pageable pageable) {
+		List<NewsEntity> entities = newsRepository.findAllByCategoryCode(code, pageable);
+		List<NewsDto> dtos = new ArrayList<>();
+
+		for (NewsEntity entity : entities) {
+			NewsDto dto = mapper.toDto(entity);
+			dto.setCategoryCode(dto.getCategory().getCode());
+			setTotalComment(dto);
+			dtos.add(dto);
+		}
+		
+		return dtos;
+	}
+
+	@Override
+	public List<NewsDto> findTopByCommentQuatity(Integer leftDay, Integer limit) {
+		List<NewsEntity> entities = newsRepository.getTopNewsByQuatityComment(leftDay,limit);
+		List<NewsDto> dtos = new ArrayList<>();
+
+		entities.forEach(e -> {
+			dtos.add(mapper.toDto(e));
+		});
+		return dtos;
+	}
+
+	@Override
+	public Integer getTotalItemsByCategoryCode(String code) {
+		
+		return newsRepository.countByCategoryCode(code);
+	}
+	
+	private void setTotalComment(NewsDto dto) {
+		dto.setTotalComments(commentRepository.countByNewsId(dto.getId()));
+	}
+	
 }

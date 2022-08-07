@@ -22,7 +22,8 @@
 				<form:select class="col-sm-9" path="categoryCode" id="categoryCode">
 					<form:option value="" label="--Select category---"/>
 					<form:options items="${categories}" itemValue="code" itemLabel="name"/>
-				</form:select>								
+				</form:select>				
+				<form:errors path="categoryCode" cssClass="alert alert-danger" element="div"></form:errors>				
 				</div>
 		</div>
 		<div class="space-4"></div>
@@ -30,6 +31,7 @@
 			<div class="col-sm-9">
 				<label class="col-sm-3 control-label">Title</label>
 				<form:input path="title" cssClass="col-sm-9"/>
+				<form:errors path="title" cssClass="alert alert-danger" element="div"></form:errors>	
 			</div>
 		</div>
 		<div class="space-4"></div>
@@ -40,7 +42,8 @@
 					<img alt="" src="${news.thumbnail}" style="width:200px">
 					<form:hidden path="thumbnail"/>
 				</c:if>
-				<form:input path="photoFile" type="file" accept="image/png, image/jpeg" name="thumbnail" id="thumbnail"/>
+				<input type="file" accept="image/png, image/jpeg" name="photoFile" id="photoFile" multiple/>
+				<form:errors path="photoFile" cssClass="alert alert-danger" element="div"></form:errors>	
 			</div>
 		</div>
 		<div class="space-4"></div>
@@ -48,6 +51,7 @@
 			<div class="col-sm-9">
 				 <label class="col-sm-3 control-label">Short description</label>
 				<form:textarea path="shortDescription" rows="5" cols="10" cssClass="col-sm-9" id="shortDescription"/>
+				<form:errors path="shortDescription" cssClass="alert alert-danger" element="div"></form:errors>	
 			</div>
 		</div>
 		<div class="space-4"></div>
@@ -55,6 +59,7 @@
 			<div class="col-sm-9">
 				<label class="col-sm-3 control-label">Content</label>	
 				<form:textarea path="content" cssClass="col-sm-9" id="content"/>
+				<form:errors path="content" cssClass="alert alert-danger" element="div"></form:errors>	
 			</div>
 		</div>
 		<div class="space-4"></div>
@@ -92,15 +97,12 @@
 			data["slug"] = to_slug(data["title"]);
 			data["content"] = editor.getData();
 			
-			var imgFile = document.getElementById('thumbnail');
-			
 			const formData = new FormData();
+			
 			formData.append('news', new Blob([JSON.stringify(data)], {
 	            type: "application/json"
 	        }));
-			if(typeof imgFile !== 'undefined'){
-			formData.append('thumbnail', imgFile);
-			}
+			formData.append('photoFile', $('#photoFile')[0].files[0]);
 					
 			saveOrUpdate(formData);
 		
@@ -119,11 +121,24 @@
 			//contentType: 'application/json',
 			//data: JSON.stringify(data),
 			//dataType: 'json',
-			success: function(result){
-				window.location.href = "${newsURL}/list?message=create_success";
+			success: function(response, data, data){
+				swal({
+					title: "Save!", 
+					text: "Your post has been save.", 
+					type: "success",
+					timer: 2000
+				},function () {
+					window.location.href = "${newsURL}/list"
+		            //location.reload(true);
+		            tr.hide();
+		          });
+				
+				/*   setTimeout(function () {
+					window.location.href = "${newsURL}/list";
+				  }, 2000); */
 			},
 			
-			error: function(error){
+			error: function(jqxhr, status, errorMessage){
 				window.location.href = "${newsURL}/add?message=error_system";
 			}
 		});

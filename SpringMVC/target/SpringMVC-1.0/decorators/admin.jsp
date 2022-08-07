@@ -18,6 +18,7 @@
     <script src="${context}/template/sweetalert/sweetalert.js"></script>
     <link rel="stylesheet" href="${context}/template/sweetalert/sweetalert.css">
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="${context}/ckeditor/ckeditor.js"></script>
 </head>
 <body class="sb-nav-fixed">

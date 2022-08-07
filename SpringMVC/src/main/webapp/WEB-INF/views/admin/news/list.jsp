@@ -63,10 +63,10 @@
 												<c:forEach var="item" items="${news.list}">
 													<tr class="item">
 														<td><label><input type="checkbox" class="check" name="newsIds[]" id="check_${item.id}" autocomplete="off" value="${item.id}"></label></td>
-														<td>${item.title}</td>
-														<td>${item.shortDescription}</td>
+														<td width="30%">${item.title}</td>
+														<td width="30%">${item.shortDescription}</td>
 														<td>${item.category.name}</td>
-														<td>${item.modifiedDate}</td>
+														<td id = "date" width="15%">${item.modifiedDate}</td>
  														<td>
 															<c:url var="editURL" value="/admin/news/edit">
 																<c:param name="id" value ="${item.id}"/>
@@ -101,7 +101,7 @@
 	<script type="text/javascript">
 	//paging
 		var totalPages = ${news.totalPages};
-		var currentPage = ${news.page};
+		var currentPage = ${news.page} + 1;
 		var size = ${news.limitItems};
 		$(function () {
 			window.pagObj = $('#pagination').twbsPagination({
@@ -110,7 +110,7 @@
 				startPage: currentPage,
 				onPageClick: function (event, page) {
 					if(currentPage != page){
-						$('#page').val(page);
+						$('#page').val(page-1);
 						$('#size').val(size);
 						/* $('#sortField').val('modifieddate');
 						$('#sortBy').val('desc'); */
@@ -197,6 +197,7 @@
 		        }
 		    });
 		});
+		
 				
 	</script>
 </body>

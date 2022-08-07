@@ -1,16 +1,24 @@
 package com.springmvc.dto;
 
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class NewsDto extends AbstractDto<NewsDto> {
+	@NotBlank(message = "Fill title")
 	private String title;
 	private String slug;
 	private String thumbnail;
+	@NotBlank(message = "Fill shortDescription")
 	private String shortDescription;
+	@NotBlank(message = "Fill content")
 	private String content; 
+	@NotBlank(message = "Select categoryCode")
 	private String categoryCode;
 	private CategoryDto category;
 	private MultipartFile photoFile;
+	private int totalComments;
+	
 	public String getTitle() {
 		return title;
 	}
@@ -75,5 +83,13 @@ public class NewsDto extends AbstractDto<NewsDto> {
 
 	public void setPhotoFile(MultipartFile photoFile) {
 		this.photoFile = photoFile;
+	}
+
+	public int getTotalComments() {
+		return totalComments;
+	}
+
+	public void setTotalComments(int totalComments) {
+		this.totalComments = totalComments;
 	}
 }

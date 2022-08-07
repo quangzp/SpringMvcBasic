@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
+<%@ page import="com.springmvc.utils.SecurityUtils"%> <!-- authorize  -->
 <c:set var="context" value="${pageContext.request.contextPath}" />
+<c:url var="commentApi" value="/api/comment" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,26 +44,45 @@
 		                    </ul>
 		                </div>
 		            </div>
+		            
+		               <!-- Comment Form  -->
+		       		<div class="comment-form">
+	                  <h4>Leave a Reply</h4>
+	                  <form class="form-contact comment_form" action="#" id="commentForm">
+	                     <div class="row">
+	                        <div class="col-12">
+	                           <div class="form-group">
+	                              <textarea class="form-control w-100" name="comment" id="comment" cols="20" rows="4" placeholder="Write Comment"></textarea>
+	                              <input type="hidden" name="newsId" value="${news.id}" />
+	                           </div>
+	                        </div>
+	                     </div>
+	                     <div class="form-group">
+	                        <button id="btn-comment" type="button" class="button button-contactForm btn_1 boxed-btn">Send Comment</button>
+	                     </div>
+	                  </form>
+	               </div>
+	               <!-- end Comment  -->
+	               
 		     <!--Comments-area  -->
-		            <div class="comments-area">
-	                  <h4>05 Comments</h4>
-	                  <div class="comment-list">
+		            <div class="comments-area" id=comments-area>
+	                  <h4>${comments.totalItems} Comments</h4>
+	                  <c:forEach var="commentItem" items="${comments.list}">
+	                  	<div class="comment-list">
 	                     <div class="single-comment justify-content-between d-flex">
 	                        <div class="user justify-content-between d-flex">
 	                           <div class="thumb">
 	                              <img src="${context}/template/web/assets/img/comment/comment_3.png" alt="">
 	                           </div>
 	                           <div class="desc">
-	                              <p class="comment">
-	                                 Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-	                                 Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
-	                              </p>
+	                             <p class="comment">${commentItem.content}</p>
 	                              <div class="d-flex justify-content-between">
 	                                 <div class="d-flex align-items-center">
 	                                    <h5>
-	                                       <a href="#">Emilly Blunt</a>
+	                                       <a href="#">${commentItem.userFullName}</a>
 	                                    </h5>
-	                                    <p class="date">December 4, 2017 at 3:12 pm </p>
+	                                    <p class="comment-date date">${commentItem.createdDate}</p>
+	                                    <script></script>
 	                                 </div>
 	                                 <div class="reply-btn">
 	                                    <a href="#" class="btn-reply text-uppercase">reply</a>
@@ -71,38 +92,14 @@
 	                        </div>
 	                     </div>
 	                   </div>
+	                  </c:forEach>
 		             </div>
-		       <!-- Comment Form  -->
-		       		<div class="comment-form">
-	                  <h4>Leave a Reply</h4>
-	                  <form class="form-contact comment_form" action="#" id="commentForm">
-	                     <div class="row">
-	                        <div class="col-12">
-	                           <div class="form-group">
-	                              <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9" placeholder="Write Comment"></textarea>
-	                           </div>
-	                        </div>
-	                        <div class="col-sm-6">
-	                           <div class="form-group">
-	                              <input class="form-control" name="name" id="name" type="text" placeholder="Name">
-	                           </div>
-	                        </div>
-	                        <div class="col-sm-6">
-	                           <div class="form-group">
-	                              <input class="form-control" name="email" id="email" type="email" placeholder="Email">
-	                           </div>
-	                        </div>
-	                        <div class="col-12">
-	                           <div class="form-group">
-	                              <input class="form-control" name="website" id="website" type="text" placeholder="Website">
-	                           </div>
-	                        </div>
-	                     </div>
-	                     <div class="form-group">
-	                        <button type="submit" class="button button-contactForm btn_1 boxed-btn">Send Message</button>
-	                     </div>
-	                  </form>
-	               </div>
+                  	<div class="view_more_comment justify-content-center">
+                  		<c:if test="${comments.page +1 < comments.totalPages}">
+                  			<a id="show_more_comment" href="javascript:;" class="txt_666 genric-btn danger-border circle arrow" title="Show more">Show more</a>
+                  		</c:if>
+                 	 </div>
+                 	 <!-- end comment  -->
 		        </div>		        
 		    </div>
 		    <div class="col-lg-4">
@@ -146,7 +143,7 @@
 		                    </div>
 		                    <div class="follow-count">
 		                        <span>8,045</span>
-		                        <p>Fans</p>
+		                        <p>hâm mộ</p>
 		                    </div>
 		                </div>
 		            </div>
@@ -159,5 +156,102 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	/* Begin Set comment time  */
+	let x = document.getElementsByClassName('comment-date');
+	for(let i = 0; i < x.length; i++){
+		x[i].innerHTML = moment(x[i].innerHTML).fromNow();
+	}
+	/* End Set comment time  */
+	var totalPages = ${comments.totalPages};
+	var currentPage = ${comments.page} + 1;
+	var size = ${comments.limitItems};
+	var newsId = ${news.id};
+	
+	// send comment
+	$('#btn-comment').click(function(event){
+		event.preventDefault();
+		var data = {};
+		var formData = $('#commentForm').serializeArray();
+		$.each(formData,function(i, value){
+			data[value.name] = value.value;
+		});
+        
+		$.ajax({
+			url: '${commentApi}',
+			type: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			dataType: 'json',
+			success: function(result){
+				console.log(result);
+			},
+			
+			error: function(error){
+				console.log(error);
+			}
+		});
+	});
+	
+	///////////////////////////////////
+	
+	$('#show_more_comment').click(function(){
+		showComments(newsId,currentPage,size);
+	});
+	
+	function showComments(newsId,page,size){
+		
+		var url = '${commentApi}' +"?newsId="+newsId+"&page="+page+"&size="+size;
+		
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'json',
+			//contentType: 'application/json',
+			success: function(result){
+				if((currentPage + 1) >= totalPages){
+					$('.view_more_comment').css("display", "none");
+				}
+				var area = document.getElementById('comments-area');
+				for(let i in result){
+					area.innerHTML +=  commentHTML(result[i]) ;
+				}
+								
+			},
+			
+			error: function(error){
+				
+			}
+		});
+	} 
+	
+	function commentHTML(item){
+		return `<div class="comment-list">
+			 <div class="single-comment justify-content-between d-flex">
+			<div class="user justify-content-between d-flex">
+		  <div class="thumb">
+             <img src="${context}/template/web/assets/img/comment/comment_3.png" alt="">
+          </div>
+          <div class="desc">
+            <p class="comment">\${item.content}</p>
+             <div class="d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                   <h5>
+                      <a href="#">\${item.userFullName}</a>
+                   </h5>
+                   <p class="date">\${moment(item.createdDate).fromNow()}</p>
+                </div>
+                <div class="reply-btn">
+                   <a href="#" class="btn-reply text-uppercase">reply</a>
+                </div>
+		             </div>
+		          </div>
+		       </div>
+		    </div>
+		  </div>`;
+	}
+	
+</script>
 </body>
 </html>

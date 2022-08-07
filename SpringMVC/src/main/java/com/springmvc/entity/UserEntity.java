@@ -8,7 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity // javax.persistence.Entity
 @Table(name = "user") // javax.persistence.Table
@@ -21,24 +23,24 @@ public class UserEntity extends BaseEntity {
 	private String password;
 
 	@Column
-	private String fullName;
+	private String firstName;
+
+	@Column
+	private String lastName;
 
 	@Column
 	private Integer status;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(
-			name = "user_role", 
-			joinColumns = @JoinColumn(name = "userId"), 
-			inverseJoinColumns = @JoinColumn(name = "roleId"))
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
 	private List<RoleEntity> roles = new ArrayList<>();
+	
 
-	public String getUsername() {
+	public String getUserName() {
 		return userName;
 	}
 
-
-	public void setUsername(String userName) {
+	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
@@ -51,11 +53,7 @@ public class UserEntity extends BaseEntity {
 	}
 
 	public String getFullName() {
-		return fullName;
-	}
-
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
+		return firstName + " " + lastName;
 	}
 
 	public Integer getStatus() {
@@ -73,5 +71,21 @@ public class UserEntity extends BaseEntity {
 	public void setRoles(List<RoleEntity> roles) {
 		this.roles = roles;
 	}
-	
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
 }

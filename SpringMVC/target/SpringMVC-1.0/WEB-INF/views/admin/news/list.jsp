@@ -66,7 +66,7 @@
 														<td>${item.title}</td>
 														<td>${item.shortDescription}</td>
 														<td>${item.category.name}</td>
-														<td>${item.modifiedDate}</td>
+														<td id = "date">${item.modifiedDate}</td>
  														<td>
 															<c:url var="editURL" value="/admin/news/edit">
 																<c:param name="id" value ="${item.id}"/>
@@ -197,6 +197,7 @@
 		        }
 		    });
 		});
+		
 				
 	</script>
 </body>

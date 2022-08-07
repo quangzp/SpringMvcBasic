@@ -24,6 +24,9 @@
 	<link rel="stylesheet" href="${context}/template/web/assets/css/nice-select.css">
 	<link rel="stylesheet" href="${context}/template/web/assets/css/style.css">
 	<link rel="stylesheet" href="${context}/template/web/assets/css/responsive.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+	
     
 </head>
 <body style="overflow: visible;">
@@ -48,14 +51,13 @@
   ========================== -->
    
 	<!-- All JS Custom Plugins Link Here here -->
+	<script src="${context}/template/paging/jquery.twbsPagination.min.js"></script>
 	<script src="${context}/template/web//assets/js/vendor/modernizr-3.5.0.min.js"></script>
 	<!-- Jquery, Popper, Bootstrap -->
-	<script src="${context}/template/web/assets/js/vendor/jquery-1.12.4.min.js"></script>
 	<script src="${context}/template/web/assets/js/popper.min.js"></script>
 	<script src="${context}/template/web/assets/js/bootstrap.min.js"></script>
 	<!-- Jquery Mobile Menu -->
 	<script src="${context}/template/web/assets/js/jquery.slicknav.min.js"></script>
-	 
 	<!-- Jquery Slick , Owl-Carousel Plugins -->
 	<script src="${context}/template/web/assets/js/owl.carousel.min.js"></script>
 	<script src="${context}/template/web/assets/js/slick.min.js"></script>
@@ -78,5 +80,6 @@
 		<!-- Jquery Plugins, main Jquery -->   
 	<script src="${context}/template/web/assets/js/plugins.js"></script>
 	<script src="${context}/template/web/assets/js/main.js"></script>
+	
 </body>
 </html>

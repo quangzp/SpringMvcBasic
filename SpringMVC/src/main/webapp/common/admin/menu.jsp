@@ -26,7 +26,7 @@
                             List
                         </a>
                         <a class="nav-link" href="${context}/admin/news/add">
-                            Create new post
+                            Create post
                         </a>
                 </div>
                 <div class="sb-sidenav-menu-heading">==================</div>

@@ -1,6 +1,5 @@
 package com.springmvc.controller.admin;
 
-import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import com.springmvc.dto.NewsDto;
 import com.springmvc.service.ICategoryService;
 import com.springmvc.service.INewsService;
@@ -41,11 +36,10 @@ public class NewsController {
 								 @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
 								 @RequestParam(name = "message", required = false) String message) {
 		Sort sortByDate = new Sort(Direction.DESC,"modifiedDate");
-		page = (page >= 1) ? page - 1 : page;
 		Pageable pageable = new PageRequest(page, size,sortByDate);
 		NewsDto newsDto = new NewsDto();
 		newsDto.setList(newsService.findAll(pageable));
-		newsDto.setPage(page + 1);
+		newsDto.setPage(page);
 		newsDto.setLimitItems(size);
 		newsDto.setTotalItems(newsService.getTotalItems());
 		newsDto.setTotalPages((int) Math.ceil(newsDto.getTotalItems() * 1.0 / newsDto.getLimitItems()));
@@ -57,6 +51,7 @@ public class NewsController {
 		}
 		mav.addObject("news", newsDto);
 		return mav;
+		
 	}
 
 	@RequestMapping(value = {"/admin/news/edit","/admin/news/add"}, method = RequestMethod.GET)

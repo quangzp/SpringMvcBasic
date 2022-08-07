@@ -8,4 +8,5 @@ import com.springmvc.entity.UserEntity;
 @Repository
 public interface IUserRepository extends JpaRepository<UserEntity, Long>{
 	UserEntity findOneByUserNameAndStatus(String userName, int status);
+	UserEntity findOneByUserName(String userName);
 }

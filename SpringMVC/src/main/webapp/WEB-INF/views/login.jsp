@@ -15,7 +15,7 @@
 	                <div class="row justify-content-center">
 	                    <div class="col-lg-5">
 	                        <div class="card shadow-lg border-0 rounded-lg mt-5">
-	                        	<c:if test="${param.incorrectAccount != null}">
+	                        	<c:if test="${param.error == 'incorrectAccount'}">
 		                        	<div class="card bg-danger text-white mb-4">
 	                                	<div class="card-body">User name or password is incorrect</div>
 	                            	</div>
@@ -27,13 +27,13 @@
 	                        	</c:if>
 	                            <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
 	                            <div class="card-body">
-	                                <form action ="j_spring_security_check" id="formSubmit" method="post">
+	                                <form action ="/login" id="formSubmit" method="post">
 	                                    <div class="form-floating mb-3">
-	                                        <input class="form-control" id="inputEmail" type="text" placeholder="name@example.com" name ="j_username"/>
+	                                        <input class="form-control" id="username" type="text" placeholder="User name" name ="j_username"/>
 	                                        <label for="inputEmail">Email address</label>
 	                                    </div>
 	                                    <div class="form-floating mb-3">
-	                                        <input class="form-control" id="inputPassword" type="password" placeholder="Password" name ="j_password" />
+	                                        <input class="form-control" id="username" type="password" placeholder="Password" name ="j_password" />
 	                                        <label for="inputPassword">Password</label>
 	                                    </div>
 	                                    <div class="form-check mb-3">
@@ -47,7 +47,7 @@
 	                                </form>
 	                            </div>
 	                            <div class="card-footer text-center py-3">
-	                                <div class="small"><a href="register.html">Need an account? Sign up!</a></div>
+	                                <div class="small"><a href="<c:url value = '/register' />">Need an account? Register!</a></div>
 	                            </div>
 	                        </div>
 	                    </div>

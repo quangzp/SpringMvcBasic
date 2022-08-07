@@ -1,10 +1,14 @@
 package com.springmvc.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -34,6 +38,10 @@ public class NewsEntity extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id")
 	private CategoryEntity category;
+	
+	@OneToMany(mappedBy = "news")
+	private List<CommentEntity> comment = new ArrayList<>();
+	
 
 	public String getTitle() {
 		return title;
@@ -81,5 +89,13 @@ public class NewsEntity extends BaseEntity {
 
 	public void setSlug(String slug) {
 		this.slug = slug;
+	}
+
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
 	}
 }

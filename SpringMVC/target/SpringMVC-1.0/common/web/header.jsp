@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="com.springmvc.utils.SecurityUtils"%>
+<%@ page import="com.springmvc.utils.SecurityUtils"%> <!-- authorize  -->
 <%@ include file="/common/taglib.jsp" %>
 <c:set var="context" value="${pageContext.request.contextPath}" />
 <!-- Header Start -->
@@ -22,7 +22,7 @@
 							<ul class="header-social">
 								<security:authorize access="isAnonymous()">
 								<li><a href="${context}/login">Login</a></li>
-								<li><a href="#">Register</a></li>								
+								<li><a href="${context}/register">Register</a></li>								
 								</security:authorize>
 								<security:authorize access="isAuthenticated()">
 								<li><a href="#">Welcome <%=SecurityUtils.getPrincipal().getFullName()%></a></li>
