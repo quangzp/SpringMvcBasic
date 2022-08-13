@@ -14,9 +14,6 @@ public class AbstractDto<T> {
 	private Integer limitItems;
 	private Integer totalPages;
 	private Integer totalItems;
-	private String sortField;
-	private String sortBy;
-	private String type;
 	public Long getId() {
 		return id;
 	}
@@ -77,22 +74,4 @@ public class AbstractDto<T> {
 	public void setLimitItems(Integer limitItems) {
 		this.limitItems = limitItems;
 	}	
-	public String getSortBy() {
-		return sortBy;
-	}
-	public void setSortBy(String sortBy) {
-		this.sortBy = sortBy;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public String getSortField() {
-		return sortField;
-	}
-	public void setSortField(String sortField) {
-		this.sortField = sortField;
-	}
 }

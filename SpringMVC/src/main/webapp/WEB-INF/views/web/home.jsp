@@ -152,16 +152,16 @@
 									aria-labelledby="nav-life-style">
 									<div class="whats-news-caption">
 										<div class="row">
-											<c:forEach var="i" begin="0" end="3">
+											<c:forEach var="item" items="${lifeStyle}">
 												<div class="col-lg-6 col-md-6">
 													<div class="single-what-news mb-100">
 														<div class="what-img">
-															<img src="${lifeStyle.get(i).thumbnail}" alt="">
+															<img src="${item.thumbnail}" alt="">
 														</div>
 														<div class="what-cap" style="height:64%;">
-															<span class="color1">${lifeStyle.get(i).category.name}</span>
+															<span class="color1">${item.category.name}</span>
 															<h4>
-																<a href="${context}/news/${lifeStyle.get(i).id}/${lifeStyle.get(i).slug}">${lifeStyle.get(i).title}</a>
+																<a href="${context}/news/${item.id}/${item.slug}">${item.title}</a>
 															</h4>
 														</div>
 													</div>
@@ -175,16 +175,16 @@
 									aria-labelledby="nav-travel">
 									<div class="whats-news-caption">
 										<div class="row">
-											<c:forEach var="i" begin="0" end="3">
+											<c:forEach var="item" items="${travel}">
 												<div class="col-lg-6 col-md-6">
 													<div class="single-what-news mb-100">
 														<div class="what-img">
-															<img src="${travel.get(i).thumbnail}" alt="">
+															<img src="${item.thumbnail}" alt="">
 														</div>
 														<div class="what-cap" style="height:64%;">
-															<span class="color1">${travel.get(i).category.name}</span>
+															<span class="color1">${item.category.name}</span>
 															<h4>
-																<a href="${context}/news/${travel.get(i).id}/${travel.get(i).slug}">${travel.get(i).title}</a>
+																<a href="${context}/news/${item.id}/${item.slug}">${item.title}</a>
 															</h4>
 														</div>
 													</div>
@@ -198,16 +198,16 @@
 									aria-labelledby="nav-fashion">
 									<div class="whats-news-caption">
 										<div class="row">
-											<c:forEach var="i" begin="0" end="3">
+											<c:forEach var="item" items="${fashion}">
 												<div class="col-lg-6 col-md-6">
 													<div class="single-what-news mb-100">
 														<div class="what-img">
-															<img src="${fashion.get(i).thumbnail}" alt="">
+															<img src="${item.thumbnail}" alt="">
 														</div>
 														<div class="what-cap" style="height:64%;">
-															<span class="color1">${fashion.get(i).category.name}</span>
+															<span class="color1">${item.category.name}</span>
 															<h4>
-																<a href="${context}/news/${fashion.get(i).id}/${fashion.get(i).slug}">${fashion.get(i).title}</a>
+																<a href="${context}/news/${item.id}/${item.slug}">${item.title}</a>
 															</h4>
 														</div>
 													</div>
@@ -221,16 +221,16 @@
 									aria-labelledby="nav-sport">
 									<div class="whats-news-caption">
 										<div class="row">
-											<c:forEach var="i" begin="0" end="3">
+											<c:forEach var="i" items="${sport}">
 												<div class="col-lg-6 col-md-6">
 													<div class="single-what-news mb-100">
 														<div class="what-img">
-															<img src="${sport.get(i).thumbnail}" alt="">
+															<img src="${item.thumbnail}" alt="">
 														</div>
 														<div class="what-cap" style="height:64%;">
-															<span class="color1">${sport.get(i).category.name}</span>
+															<span class="color1">${item.category.name}</span>
 															<h4>
-																<a href="${context}/news/${sport.get(i).id}/${sport.get(i).slug}">${sport.get(i).title}</a>
+																<a href="${context}/news/${item.id}/${item.slug}">${item.title}</a>
 															</h4>
 														</div>
 													</div>
@@ -244,16 +244,16 @@
 									aria-labelledby="nav-technology">
 									<div class="whats-news-caption">
 										<div class="row">
-											<c:forEach var="i" begin="0" end="3">
+											<c:forEach var="i" items="${technology}">
 												<div class="col-lg-6 col-md-6">
 													<div class="single-what-news mb-100">
 														<div class="what-img">
-															<img src="${technology.get(i).thumbnail}" alt="">
+															<img src="${item.thumbnail}" alt="">
 														</div>
 														<div class="what-cap" style="height:64%;">
-															<span class="color1">${technology.get(i).category.name}</span>
+															<span class="color1">${item.category.name}</span>
 															<h4>
-																<a href="${context}/news/${technology.get(i).id}/${technology.get(i).slug}">${technology.get(i).title}</a>
+																<a href="${context}/news/${item.id}/${item.slug}">${item.title}</a>
 															</h4>
 														</div>
 													</div>

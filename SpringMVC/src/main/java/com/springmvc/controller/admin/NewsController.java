@@ -35,13 +35,13 @@ public class NewsController {
 	public ModelAndView showList(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
 								 @RequestParam(name = "size", required = false, defaultValue = "5") Integer size,
 								 @RequestParam(name = "message", required = false) String message) {
-		Sort sortByDate = new Sort(Direction.DESC,"modifiedDate");
-		Pageable pageable = new PageRequest(page, size,sortByDate);
+		Sort sort = new Sort(Direction.DESC,"modifiedDate");
+		Pageable pageable = new PageRequest(page, size,sort);
 		NewsDto newsDto = new NewsDto();
-		newsDto.setList(newsService.findAll(pageable));
+		newsDto.setTotalItems(newsService.getTotalItems());
 		newsDto.setPage(page);
 		newsDto.setLimitItems(size);
-		newsDto.setTotalItems(newsService.getTotalItems());
+		newsDto.setList(newsService.findAll(pageable));
 		newsDto.setTotalPages((int) Math.ceil(newsDto.getTotalItems() * 1.0 / newsDto.getLimitItems()));
 		ModelAndView mav = new ModelAndView("admin/news/list");
 		if(message != null) {
