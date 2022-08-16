@@ -28,38 +28,27 @@ public class NewsController {
 	@GetMapping(value = "/news/{newsId}/{slug}")
 	public ModelAndView showDetail(@PathVariable(value = "newsId", required = true) Long id) {
 
-		CommentDto commentDto = new CommentDto();
-		commentDto.setPage(0);
-		commentDto.setLimitItems(3);
-		commentDto.setTotalItems(commentService.getTotalItemByNewsId(id));
-		commentDto.setTotalPages((int) Math.ceil(commentDto.getTotalItems() * 1.0 / commentDto.getLimitItems()));
-
+		final int page = 0;
+		final int size = 3;
 		Sort sort = new Sort(Direction.DESC, "createdDate");
-		Pageable pageable = new PageRequest(commentDto.getPage(), commentDto.getLimitItems(), sort);
-		commentDto.setList(commentService.findAllByNewsId(id, pageable));
+		Pageable pageable = new PageRequest(page, size, sort);
 
 		ModelAndView mav = new ModelAndView("web/detail");
 		mav.addObject("news", newsService.findByID(id));
-		mav.addObject("comments", commentDto);
+		mav.addObject("comments", commentService.findAllByNewsId(id, pageable));
+		
 		return mav;
 	}
 	
 	@GetMapping(value = "/news/{cateCode}")
 	public ModelAndView showListByCategory(@PathVariable(value = "cateCode", required = true) String code,
 										   @RequestParam(value = "page",required = false,defaultValue = "0")Integer page) {
-		final int SIZE = 5;
-		NewsDto newsDto = new NewsDto();
-		newsDto.setPage(page);
-		newsDto.setLimitItems(SIZE);
-		newsDto.setTotalItems(newsService.getTotalItemsByCategoryCode(code));
-		newsDto.setTotalPages((int) Math.ceil(newsDto.getTotalItems() * 1.0 / newsDto.getLimitItems()));
-		
+		final int SIZE = 5;//default element of a page
 		Sort sort = new Sort(Direction.DESC, "createdDate");
-		Pageable pageable = new PageRequest(newsDto.getPage(), newsDto.getLimitItems(), sort);
-		newsDto.setList(newsService.findAllByCategoryCode(code, pageable));
-		newsDto.setCategory(newsDto.getList().get(0).getCategory());
+		Pageable pageable = new PageRequest(page, SIZE, sort);
+		
 		ModelAndView mav = new ModelAndView("web/category");
-		mav.addObject("news",newsDto);
+		mav.addObject("news",newsService.findAllByCategoryCode(code, pageable));
 		
 		return mav;
 	}

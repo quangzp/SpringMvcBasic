@@ -30,14 +30,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 		if (userEntity == null) {
 			throw new UsernameNotFoundException("User is not been found");
 		}
-		
+
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		for (RoleEntity role : userEntity.getRoles()) {
 			authorities.add(new SimpleGrantedAuthority(role.getCode()));
 		}
-		
+
 		// put data to security for maitaining system
-		MyUser user = new MyUser(userEntity.getUserName(), userEntity.getPassword(), true, true, true, true, authorities);
+		MyUser user = new MyUser(userEntity.getUserName(), userEntity.getPassword(), true, true, true, true,
+				authorities);
 		user.setFullName(userEntity.getFullName());
 		return user;
 	}

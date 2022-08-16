@@ -50,7 +50,8 @@ public class HomeController {
 		mav.addObject("technology",
 				newsService.findAllByCategoryCode("technology", new PageRequest(0, 4, Direction.DESC, "createdDate")));
 		
-		mav.addObject("topNews",newsService.findTopByCommentQuatity(-7, 5));
+		// default: previous days -30, limit items 5
+		mav.addObject("mostComments",newsService.findTopByCommentQuatity(-30, 5));
 
 		return mav;
 	}

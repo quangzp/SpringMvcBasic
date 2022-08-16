@@ -21,7 +21,7 @@
 				<label class="col-sm-3 control-label">Category</label>
 				<form:select class="col-sm-9" path="categoryCode" id="categoryCode">
 					<form:option value="" label="--Select category---"/>
-					<form:options items="${categories}" itemValue="code" itemLabel="name"/>
+					<form:options items="${categories.list}" itemValue="code" itemLabel="name"/>
 				</form:select>				
 				<form:errors path="categoryCode" cssClass="alert alert-danger" element="div"></form:errors>				
 				</div>

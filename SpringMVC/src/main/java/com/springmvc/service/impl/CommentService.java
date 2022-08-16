@@ -35,7 +35,7 @@ public class CommentService implements ICommentService {
 	private INewsRepository newsRepository;
 
 	@Override
-	public List<CommentDto> findAllByNewsId(Long newsId, Pageable pageable) {
+	public CommentDto findAllByNewsId(Long newsId, Pageable pageable) {
 		List<CommentEntity> entities = commentRepository.findAllByNewsId(newsId, pageable);
 		List<CommentDto> dtos = new ArrayList<>();
 		for (CommentEntity entity : entities) {
@@ -47,7 +47,15 @@ public class CommentService implements ICommentService {
 
 			dtos.add(dto);
 		}
-		return dtos;
+
+		CommentDto resultComment = new CommentDto();
+		resultComment.setPage(pageable.getPageNumber());
+		resultComment.setLimitItems(pageable.getPageSize());
+		resultComment.setTotalItems(getTotalItemByNewsId(newsId));
+		resultComment
+				.setTotalPages((int) Math.ceil(resultComment.getTotalItems() * 1.0 / resultComment.getLimitItems()));
+		resultComment.setList(dtos);
+		return resultComment;
 	}
 
 	@Override

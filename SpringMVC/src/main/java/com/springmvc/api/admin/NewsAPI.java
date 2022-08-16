@@ -29,15 +29,8 @@ public class NewsApi {
 			return newsService.save(newsDto, photoFile);			
 		}
 		return newsDto;
-//		Map<String,NewsDto> map = new HashMap<>();
-//		map.put("news",newsDto);
-//		return new ModelAndView("admin/news/edit",map,HttpStatus.NOT_MODIFIED);
-	}
 
-//	@PutMapping(value = "/api/admin/news", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-//	public NewsDto updateNews(@RequestPart("news") NewsDto newsDto,@RequestPart(value = "thumbnail",required = false) MultipartFile photoFile) {
-//		return newsService.save(newsDto,photoFile);
-//	}
+	}
 
 	@DeleteMapping("/api/admin/news")
 	public void deleteNews(@RequestBody long[] ids) {

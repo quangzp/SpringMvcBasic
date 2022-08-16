@@ -31,17 +31,11 @@ public class CommentApi {
 			@RequestParam(name = "newsId", required = true) Long newsId) {
 		try {
 
-			CommentDto commentDto = new CommentDto();
-			commentDto.setPage(page);
-			commentDto.setLimitItems(size);
-			commentDto.setTotalItems(commentService.getTotalItemByNewsId(newsId));
-			commentDto.setTotalPages((int) Math.ceil(commentDto.getTotalItems() * 1.0 / commentDto.getLimitItems()));
 			
 			Sort sortByDate = new Sort(Direction.DESC, "modifiedDate");
 			Pageable pageable = new PageRequest(page, size, sortByDate);
 			
-			commentDto.setList(commentService.findAllByNewsId(newsId, pageable));
-			return new ResponseEntity<CommentDto>(commentDto, HttpStatus.OK);
+			return new ResponseEntity<CommentDto>(commentService.findAllByNewsId(newsId, pageable), HttpStatus.OK);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}

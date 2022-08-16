@@ -22,11 +22,14 @@ public class CategoryService implements ICategoryService {
 	private ICategoryMapper mapper;
 
 	@Override
-	public List<CategoryDto> finAll() {
+	public CategoryDto finAll() {
 		List<CategoryEntity> entities = categoryRepository.findAll();
-		List<CategoryDto> result = new ArrayList<>();
-		entities.forEach(e -> result.add(mapper.toDto(e)));
-		return result;
+		List<CategoryDto> list = new ArrayList<>();
+		entities.forEach(e -> list.add(mapper.toDto(e)));
+
+		CategoryDto dto = new CategoryDto();
+		dto.setList(list);
+		return dto;
 	}
 
 	@Override

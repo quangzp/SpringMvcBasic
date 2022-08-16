@@ -12,7 +12,7 @@
 						<div class="single-footer-caption">
 							<!-- logo -->
 							<div class="footer-logo">
-								<a href="index.html"><img
+								<a href="${context}/"><img
 									src="${context}/template/web/assets/img/logo/logo2_footer.png" alt=""></a>
 							</div>
 							<div class="footer-tittle">

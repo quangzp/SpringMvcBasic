@@ -59,7 +59,7 @@
 									<li><a href="${context}/">Home</a></li>
 									
 									<!-- show categories -->
-									<c:forEach var="c" items="${categories}" >
+									<c:forEach var="c" items="${categories.list}" >
 											<li><a href="${context}/news/${c.code}">${c.name}</a></li>							
 									</c:forEach>
 									
@@ -93,7 +93,7 @@
 								<ul class="slicknav_nav slicknav_hidden" aria-hidden="true"
 									role="menu" style="display: none;">
 									<li><a href="${context}/home" role="menuitem" tabindex="-1">Home</a></li>
-									<c:forEach var="c" items="${categories}" >
+									<c:forEach var="c" items="${categories.list}" >
 											<li><a href="${context}/category/${c.id}" role="menuitem" tabindex="-1">${c.name}</a></li>							
 									</c:forEach>
 								</ul>

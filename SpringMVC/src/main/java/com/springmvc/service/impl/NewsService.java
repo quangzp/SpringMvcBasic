@@ -42,16 +42,24 @@ public class NewsService implements INewsService {
 	private Cloudinary cloudinary;
 
 	@Override
-	public List<NewsDto> findAll(Pageable pageable) {
+	public NewsDto findAll(Pageable pageable) {		
 		List<NewsEntity> entities = newsRepository.findAll(pageable).getContent();
+		
 		List<NewsDto> dtos = new ArrayList<>();
 		for (NewsEntity entity : entities) {
 			NewsDto dto = mapper.toDto(entity);
 			dto.setCategoryCode(dto.getCategory().getCode());
 			dtos.add(dto);
 		}
-
-		return dtos;
+		
+		NewsDto returnDto = new NewsDto();
+		returnDto.setList(dtos);
+		returnDto.setPage(pageable.getPageNumber());
+		returnDto.setLimitItems(pageable.getPageSize());
+		returnDto.setTotalItems(getTotalItems());
+		returnDto.setTotalPages((int) Math.ceil(returnDto.getTotalItems() * 1.0 / returnDto.getLimitItems()));
+		
+		return returnDto;
 	}
 
 	@Override
@@ -114,7 +122,8 @@ public class NewsService implements INewsService {
 	}
 
 	@Override
-	public List<NewsDto> findAllByCategoryCode(String code, Pageable pageable) {
+	public NewsDto findAllByCategoryCode(String code,Pageable pageable) {
+		
 		List<NewsEntity> entities = newsRepository.findAllByCategoryCode(code, pageable);
 		List<NewsDto> dtos = new ArrayList<>();
 
@@ -125,18 +134,29 @@ public class NewsService implements INewsService {
 			dtos.add(dto);
 		}
 		
-		return dtos;
+		NewsDto returnDto = new NewsDto();
+		returnDto.setList(dtos);
+		returnDto.setPage(pageable.getPageNumber());
+		returnDto.setLimitItems(pageable.getPageSize());
+		returnDto.setTotalItems(getTotalItemsByCategoryCode(code));
+		returnDto.setTotalPages((int) Math.ceil(returnDto.getTotalItems() * 1.0 / returnDto.getLimitItems()));
+		returnDto.setCategory(returnDto.getList().get(0).getCategory());
+		return returnDto;
 	}
 
 	@Override
-	public List<NewsDto> findTopByCommentQuatity(Integer leftDay, Integer limit) {
+	public NewsDto findTopByCommentQuatity(Integer leftDay, Integer limit) {
 		List<NewsEntity> entities = newsRepository.getTopNewsByQuatityComment(leftDay,limit);
 		List<NewsDto> dtos = new ArrayList<>();
 
 		entities.forEach(e -> {
 			dtos.add(mapper.toDto(e));
 		});
-		return dtos;
+		
+		NewsDto returnDto = new NewsDto();
+		returnDto.setList(dtos);
+		
+		return returnDto;
 	}
 
 	@Override
